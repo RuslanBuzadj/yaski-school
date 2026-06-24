@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm dlx *)",
+      "Bash(cd \"e:/React/yaski-scholl\" && mkdir -p src/app src/pages src/widgets src/features src/entities src/shared/ui src/shared/lib src/shared/api src/shared/config src/shared/types 2>&1)",
+      "Bash(mv src/lib/utils.ts src/shared/lib/utils.ts)",
+      "Bash(rmdir src/lib)",
+      "Bash(mkdir -p \"e:/React/yaski-scholl/src/app/pro-nas\" \"e:/React/yaski-scholl/src/app/novyny\" \"e:/React/yaski-scholl/src/app/podii\" \"e:/React/yaski-scholl/src/app/diialnist\" \"e:/React/yaski-scholl/src/app/kolektyv\" \"e:/React/yaski-scholl/src/app/halerea\" \"e:/React/yaski-scholl/src/app/kontakty\")",
+      "Bash(Remove-Item -Recurse -Force \"e:/React/yaski-scholl/src/app/pro-nas\", \"e:/React/yaski-scholl/src/app/novyny\", \"e:/React/yaski-scholl/src/app/podii\", \"e:/React/yaski-scholl/src/app/diialnist\", \"e:/React/yaski-scholl/src/app/kolektyv\", \"e:/React/yaski-scholl/src/app/halerea\", \"e:/React/yaski-scholl/src/app/kontakty\" -ErrorAction SilentlyContinue)"
+    ],
+    "additionalDirectories": [
+      "e:\\React\\yaski-scholl\\src\\app"
+    ]
+  }
+}
