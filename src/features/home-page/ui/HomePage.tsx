@@ -1,6 +1,6 @@
 import { HeroSection, NewsSection, GallerySection, StaffSection } from "@/widgets/home";
 
-export default function Home() {
+export function HomePage() {
   return (
     <>
       <HeroSection />
