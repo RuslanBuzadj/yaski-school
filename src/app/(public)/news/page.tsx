@@ -1,3 +1,5 @@
-export default function NewsPage() {
-  return <main><h1>Новини</h1></main>;
+import { NewsPage } from "@/features/news-page";
+
+export default function Page() {
+  return <NewsPage />;
 }
