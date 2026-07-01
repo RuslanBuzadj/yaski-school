@@ -1,3 +1,5 @@
-export default function StaffPage() {
-  return <main><h1>Колектив</h1></main>;
+import { StaffPage } from "@/features/staff-page";
+
+export default function Page() {
+  return <StaffPage />;
 }
