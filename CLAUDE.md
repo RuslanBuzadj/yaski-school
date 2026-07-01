@@ -29,8 +29,8 @@ This project follows **Feature-Sliced Design (FSD)**. Code is organized into lay
 ```
 src/
 ├── app/        # @/app/*      — Next.js routes, layouts (composition root)
-├── widgets/    # @/widgets/*  — composed page sections (Header, Footer, HomePage sections, AdminSidebar)
-├── features/   # @/features/* — user-facing feature slices (e.g. home-page)
+├── widgets/    # @/widgets/*  — composed page sections (Header, Footer, Breadcrumb, HomePage sections, AdminSidebar, ThemeProvider)
+├── features/   # @/features/* — user-facing feature slices (e.g. home-page, staff-page, staff-profile-page)
 ├── entities/   # @/entities/* — domain models + their UI (news, staff, school)
 └── shared/     # @/shared/*   — generic UI primitives, lib/utils, no domain knowledge
 ```
@@ -78,7 +78,7 @@ When adding a route: add the path to `routes` first, then reference it in the ap
 
 ### Shared UI components
 
-shadcn/Radix components live in `src/shared/ui/` (not `src/components/`). Primitives available: `Button`, `Card`, `Input`, `Table`, `Sidebar`, `Sheet`, `Skeleton`, `Tooltip`, `Popover`, `DropdownMenu`, `Breadcrumb`, `Separator`, `Avatar`, and `Empty` (empty-state compound component).
+shadcn/Radix components live in `src/shared/ui/` (not `src/components/`). Primitives available: `Button`, `Card`, `Input`, `Table`, `Sidebar`, `Sheet`, `Skeleton`, `Tooltip`, `Popover`, `DropdownMenu`, `Breadcrumb`, `Separator`, `Avatar`, `ImagePlaceholder`, and `Empty` (empty-state compound component).
 
 ### Providers
 
