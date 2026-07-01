@@ -24,6 +24,23 @@ No test runner is configured yet.
 
 ## Architecture
 
+This project follows **Feature-Sliced Design (FSD)**. Code is organized into layers, each with its own path alias:
+
+```
+src/
+├── app/        # @/app/*      — Next.js routes, layouts (composition root)
+├── widgets/    # @/widgets/*  — composed page sections (Header, Footer, HomePage sections, AdminSidebar)
+├── features/   # @/features/* — user-facing feature slices (e.g. home-page)
+├── entities/   # @/entities/* — domain models + their UI (news, staff, school)
+└── shared/     # @/shared/*   — generic UI primitives, lib/utils, no domain knowledge
+```
+
+Layer rule: a slice may only import from layers below it (`app` → `widgets` → `features` → `entities` → `shared`), never sideways or up. There's no lint rule enforcing this yet — hold the line manually.
+
+Each slice exposes its public API through `index.ts` (e.g. `src/entities/staff/index.ts` re-exports `StaffCard`, `mockStaff`, `StaffMember`) — import from the slice root (`@/entities/staff`), not deep paths, except where a slice has no barrel yet (e.g. `widgets/header`, `widgets/admin-sidebar` are currently imported by direct file path).
+
+Within a slice, conventional subfolders are `ui/` (components) and `model/` (types, mock data, business logic).
+
 ### Route groups
 
 ```
@@ -67,6 +84,6 @@ shadcn/Radix components live in `src/shared/ui/` (not `src/components/`). Primit
 
 Root `layout.tsx` wraps everything in `ThemeProvider` (next-themes, `attribute="class"`) and `TooltipProvider`. No other global providers needed.
 
-### Path alias
+### Path aliases
 
-`@/` maps to `src/`. Use it for all imports.
+`@/*` maps to `src/*`, plus one alias per FSD layer (`@/app/*`, `@/widgets/*`, `@/features/*`, `@/entities/*`, `@/shared/*`) — see `tsconfig.json`. shadcn is configured (`components.json`) to install new components under `@/shared/ui`, `@/shared/lib`, `@/shared/lib/hooks`.

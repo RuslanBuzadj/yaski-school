@@ -129,14 +129,13 @@ export default function Header() {
         {/* Right controls */}
         <div className="flex items-center gap-2 flex-1 justify-end">
           <ThemeToggle />
-
-          <Link
-            href={contactLink.href}
-            className="hidden md:inline-flex items-center justify-center rounded-full bg-yellow-400 hover:bg-yellow-300 dark:bg-yellow-500 dark:hover:bg-yellow-400 text-foreground text-sm font-semibold px-5 py-2 transition-colors"
-          >
-            {contactLink.label}
-          </Link>
-
+          <Button variant={'yellow'} className=" hidden md:inline-flex px-5 py-2" asChild>
+              <Link
+                href={contactLink.href}
+              >
+                {contactLink.label}
+              </Link>
+          </Button>
           {/* Mobile menu */}
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
