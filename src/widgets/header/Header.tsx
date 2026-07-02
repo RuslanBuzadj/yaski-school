@@ -108,14 +108,14 @@ export default function Header() {
           <div className="rounded-full ring-2 ring-yellow-400/60 group-hover:ring-yellow-400 transition-all">
             <Image
               src="/images/logo.png"
-              alt="Герб ліцею"
+              alt="Герб школи"
               width={40}
               height={40}
               className="rounded-full"
             />
           </div>
           <span className="hidden sm:block font-bold text-xs uppercase leading-tight max-w-[220px] tracking-wide">
-            Одеський ліцей № 35 Одеської міської ради
+            Загальноосвітня школа села Яські
           </span>
         </Link>
 

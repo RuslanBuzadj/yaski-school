@@ -11,16 +11,16 @@ export function HeroSection() {
         <div className="flex flex-col justify-center gap-6 z-10">
           <div>
             <span className="inline-block text-xs font-semibold tracking-widest uppercase text-blue-600 dark:text-blue-400 mb-3">
-              Одеський ліцей № 35
+              Загальноосвітня школа села Яські
             </span>
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground leading-tight">
               Вітаємо!
             </h1>
           </div>
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-md">
-            Ви зайшли на сайт Одеського ліцею № 35 Одеської міської ради! Тут ви можете дізнатися
+            Ви зайшли на сайт Загальноосвітньої школи села Яські! Тут ви можете дізнатися
             про історію нашого закладу, ознайомитись із правилами прийому, а також побачити, які
-            заходи проходять в нашому ліцеї протягом року.
+            заходи проходять в нашій школі протягом року.
           </p>
           <div className="flex flex-wrap items-center gap-3">
             <Button asChild variant="default" size="lg">
@@ -40,7 +40,7 @@ export function HeroSection() {
             className="absolute inset-0 overflow-hidden"
             style={{ clipPath: "polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%)" }}
           >
-            <ImagePlaceholder src={null} alt="Будівля ліцею" fill />
+            <ImagePlaceholder src={null} alt="Будівля школи" fill />
           </div>
         </div>
       </div>

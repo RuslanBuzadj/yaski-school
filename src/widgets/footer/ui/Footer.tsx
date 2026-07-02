@@ -30,7 +30,7 @@ export default function Footer() {
               <div className="rounded-full ring-2 ring-yellow-400/40 group-hover:ring-yellow-400/80 transition-all shrink-0">
                 <Image
                   src="/images/logo.png"
-                  alt="Герб ліцею"
+                  alt="Герб школи"
                   width={44}
                   height={44}
                   className="rounded-full"
