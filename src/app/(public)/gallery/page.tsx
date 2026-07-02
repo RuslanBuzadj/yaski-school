@@ -1,3 +1,5 @@
-export default function GalleryPage() {
-  return <main><h1>Галерея</h1></main>;
+import { GalleryPage } from "@/features/gallery-page";
+
+export default function Page() {
+  return <GalleryPage />;
 }
