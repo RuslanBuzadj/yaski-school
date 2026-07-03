@@ -14,6 +14,7 @@ export const routes = {
     activities: "/admin/activities",
     staff: "/admin/staff",
     gallery: "/admin/gallery",
+    login: "/admin/login"
   },
 } as const;
 
