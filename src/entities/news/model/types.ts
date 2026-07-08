@@ -3,6 +3,7 @@ export type News = {
   date: string;
   title: string;
   excerpt: string;
-  content?: string[];
+  /** Rich-text HTML produced by the admin `TextEditor`; render with the `ck-content` class. */
+  content?: string;
   image?: string | null;
 };

@@ -20,13 +20,14 @@ export function NewsArticle({ news }: Props) {
 
       <h1 className="text-2xl sm:text-3xl font-bold text-foreground">{news.title}</h1>
 
-      <div className="flex flex-col gap-4">
-        {(news.content ?? [news.excerpt]).map((paragraph, index) => (
-          <p key={index} className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            {paragraph}
-          </p>
-        ))}
-      </div>
+      {news.content ? (
+        <div
+          className="ck-content text-sm sm:text-base text-muted-foreground leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: news.content }}
+        />
+      ) : (
+        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{news.excerpt}</p>
+      )}
     </article>
   );
 }

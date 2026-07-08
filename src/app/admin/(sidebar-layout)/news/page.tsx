@@ -1,3 +1,5 @@
-export default function AdminNewsPage() {
-  return <main><h1>Новини — адмін</h1></main>;
+import { AdminNewsPage } from "@/features/admin/news-page";
+
+export default function Page() {
+  return <AdminNewsPage />;
 }
