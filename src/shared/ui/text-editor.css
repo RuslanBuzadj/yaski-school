@@ -1,0 +1,64 @@
+/*
+ * Dark-mode overrides for CKEditor 5. CKEditor's own stylesheet declares its
+ * base tokens on a plain `:root`, so `:root.dark` (specificity 0,2,0) is used
+ * here to reliably win over it regardless of stylesheet load order.
+ */
+:root.dark {
+  --ck-color-base-foreground: var(--muted);
+  --ck-color-base-background: var(--card);
+  --ck-color-base-border: var(--border);
+  --ck-color-base-action: var(--primary);
+  --ck-color-base-focus: var(--ring);
+  --ck-color-base-text: var(--foreground);
+  --ck-color-base-active: var(--primary);
+  --ck-color-base-active-focus: var(--primary);
+  --ck-color-base-error: var(--destructive);
+
+  --ck-color-button-default-hover-background: var(--accent);
+  --ck-color-button-default-active-background: var(--accent);
+  --ck-color-button-on-background: var(--accent);
+  --ck-color-button-on-hover-background: var(--accent);
+  --ck-color-button-on-active-background: var(--accent);
+  --ck-color-button-on-color: var(--accent-foreground);
+
+  --ck-color-input-disabled-background: var(--muted);
+  --ck-color-input-disabled-border: var(--border);
+  --ck-color-input-disabled-text: var(--muted-foreground);
+
+  --ck-color-engine-placeholder-text: var(--muted-foreground);
+
+  --ck-content-font-color: var(--foreground);
+}
+
+:root.dark .ck-content pre {
+  color: var(--foreground);
+  background: var(--muted);
+  border-color: var(--border);
+}
+
+:root.dark .ck-content code {
+  background-color: var(--muted);
+}
+
+:root.dark .ck-content blockquote {
+  border-left-color: var(--border);
+  color: var(--muted-foreground);
+}
+
+:root.dark .ck-content[dir="rtl"] blockquote {
+  border-right-color: var(--border);
+}
+
+:root.dark .ck-content table.table:not(.layout-table),
+:root.dark .ck-content figure.table:not(.layout-table) > table {
+  border-color: var(--border);
+}
+
+:root.dark .ck-content :is(thead, tfoot, tbody) > tr > th {
+  background: var(--muted);
+}
+
+:root.dark .ck-content :is(thead, tfoot, tbody) > tr > td,
+:root.dark .ck-content :is(thead, tfoot, tbody) > tr > th {
+  border-color: var(--border);
+}

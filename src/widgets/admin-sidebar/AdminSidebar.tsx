@@ -13,6 +13,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { adminNavItems, routes } from "@/config/navigation";
+import { isActiveRoute } from "@/shared/lib/utils";
 import {
   Sidebar,
   SidebarContent,
@@ -66,10 +67,7 @@ export default function AdminSidebar() {
             <SidebarMenu>
               {adminNavItems.map(({ href, label }) => {
                 const Icon = icons[href] ?? LayoutDashboard;
-                const isActive =
-                  href === routes.admin.root
-                    ? pathname === href
-                    : pathname?.startsWith(href);
+                const isActive = isActiveRoute(pathname, href, routes.admin.root);
 
                 return (
                   <SidebarMenuItem key={href}>

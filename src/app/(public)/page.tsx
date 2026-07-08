@@ -1,12 +1,5 @@
-import { HeroSection, NewsSection, GallerySection, StaffSection } from "@/widgets/home";
+import { HomePage } from "@/features/home-page";
 
 export default function Home() {
-  return (
-    <>
-      <HeroSection />
-      <NewsSection />
-      <GallerySection />
-      <StaffSection />
-    </>
-  );
+  return <HomePage />;
 }

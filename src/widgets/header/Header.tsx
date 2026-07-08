@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { publicNavItems } from "@/config/navigation";
 import { routes } from "@/config/navigation";
-import { cn } from "@/shared/lib/utils";
+import { cn, isActiveRoute } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/shared/ui/sheet";
 import { ThemeToggle } from "@/shared/ui/theme-toggle";
@@ -27,7 +27,7 @@ function NavLink({
   mobile?: boolean;
 }) {
   const pathname = usePathname();
-  const active = pathname != null && (pathname === href || (href !== routes.home && pathname.startsWith(href)));
+  const active = isActiveRoute(pathname, href, routes.home);
 
   if (mobile) {
     return (

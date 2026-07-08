@@ -13,6 +13,8 @@ export const routes = {
     events: "/admin/events",
     activities: "/admin/activities",
     staff: "/admin/staff",
+    staffNew: "/admin/staff/new",
+    staffEdit: (id: number | string) => `/admin/staff/${id}/edit`,
     gallery: "/admin/gallery",
     login: "/admin/login"
   },

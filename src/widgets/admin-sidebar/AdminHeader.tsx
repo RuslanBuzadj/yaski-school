@@ -2,7 +2,8 @@
 
 import { usePathname } from "next/navigation";
 import { LogOut, User } from "lucide-react";
-import { adminNavItems } from "@/config/navigation";
+import { adminNavItems, routes } from "@/config/navigation";
+import { isActiveRoute } from "@/shared/lib/utils";
 import { Avatar, AvatarFallback } from "@/shared/ui/avatar";
 import {
   DropdownMenu,
@@ -23,12 +24,10 @@ const currentUser = {
 
 export default function AdminHeader() {
   const pathname = usePathname();
-  const current = adminNavItems.find(({ href }) =>
-    href === "/admin" ? pathname === href : pathname?.startsWith(href)
-  );
+  const current = adminNavItems.find(({ href }) => isActiveRoute(pathname, href, routes.admin.root));
 
   return (
-    <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
+    <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4 sticky top-0 z-10 bg-background">
       <SidebarTrigger />
       <Separator orientation="vertical" className="mr-2 h-auto" />
       <h1 className="flex-1 text-sm font-medium">{current?.label ?? "Адмін панель"}</h1>
