@@ -1,3 +1,5 @@
-export default function EventsPage() {
-  return <main><h1>Події</h1></main>;
+import { EventsPage } from "@/features/events-page";
+
+export default function Page() {
+  return <EventsPage />;
 }
