@@ -1,51 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
-import Link from "next/link";
+import { Pencil, Trash2 } from "lucide-react";
 import type { News } from "@/entities/news";
 import { routes } from "@/config/navigation";
 import { ImagePlaceholder } from "@/shared/ui/image-placeholder";
-import { Button } from "@/shared/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/shared/ui/dropdown-menu";
+import { RowActions } from "@/shared/ui/row-actions";
 
-function NewsRowActions({ news }: { news: News }) {
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  function handleDelete() {
-    // TODO: implement once backend is ready
-  }
-
-  return (
-    <div className="flex justify-end">
-      <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon-sm">
-            <MoreHorizontal />
-            <span className="sr-only">Дії</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem asChild>
-            <Link href={routes.admin.newsEdit(news.id)}>
-              <Pencil />
-              <span>Редагувати</span>
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem variant="destructive" onSelect={handleDelete}>
-            <Trash2 />
-            <span>Видалити</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
-  );
+function handleDeleteNews() {
+  // TODO: implement once backend is ready
 }
 
 export function useNewsColumns(): ColumnDef<News>[] {
@@ -76,7 +39,23 @@ export function useNewsColumns(): ColumnDef<News>[] {
     {
       id: "actions",
       header: "",
-      cell: ({ row }) => <NewsRowActions news={row.original} />,
+      cell: ({ row }) => (
+        <RowActions
+          actions={[
+            {
+              label: "Редагувати",
+              icon: <Pencil />,
+              href: routes.admin.newsEdit(row.original.id),
+            },
+            {
+              label: "Видалити",
+              icon: <Trash2 />,
+              variant: "destructive",
+              onSelect: handleDeleteNews,
+            },
+          ]}
+        />
+      ),
     },
   ];
 }

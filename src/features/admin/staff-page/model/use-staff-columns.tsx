@@ -1,52 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
-import Link from "next/link";
+import { Pencil, Trash2 } from "lucide-react";
 import { staffGroupLabels, type StaffMember } from "@/entities/staff";
 import { routes } from "@/config/navigation";
 import { getInitials } from "@/shared/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
-import { Button } from "@/shared/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/shared/ui/dropdown-menu";
+import { RowActions } from "@/shared/ui/row-actions";
 
-function StaffRowActions({ member }: { member: StaffMember }) {
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  function handleDelete() {
-    // TODO: implement once backend is ready
-  }
-
-  return (
-    <div className="flex justify-end">
-      <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon-sm">
-            <MoreHorizontal />
-            <span className="sr-only">Дії</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem asChild>
-            <Link href={routes.admin.staffEdit(member.id)}>
-              <Pencil />
-              <span>Редагувати</span>
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem variant="destructive" onSelect={handleDelete}>
-            <Trash2 />
-            <span>Видалити</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
-  );
+function handleDeleteStaff() {
+  // TODO: implement once backend is ready
 }
 
 export function useStaffColumns(): ColumnDef<StaffMember>[] {
@@ -98,7 +61,23 @@ export function useStaffColumns(): ColumnDef<StaffMember>[] {
     {
       id: "actions",
       header: "",
-      cell: ({ row }) => <StaffRowActions member={row.original} />,
+      cell: ({ row }) => (
+        <RowActions
+          actions={[
+            {
+              label: "Редагувати",
+              icon: <Pencil />,
+              href: routes.admin.staffEdit(row.original.id),
+            },
+            {
+              label: "Видалити",
+              icon: <Trash2 />,
+              variant: "destructive",
+              onSelect: handleDeleteStaff,
+            },
+          ]}
+        />
+      ),
     },
   ];
 }
