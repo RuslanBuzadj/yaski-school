@@ -1,3 +1,5 @@
-export default function AdminEventsPage() {
-  return <main><h1>Події — адмін</h1></main>;
+import { AdminEventsPage } from "@/features/admin/events-page";
+
+export default function Page() {
+  return <AdminEventsPage />;
 }
