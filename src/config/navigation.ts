@@ -1,6 +1,7 @@
 export const routes = {
   home: "/",
   about: "/about",
+  aboutSection: (slug: string) => `/about/${slug}`,
   news: "/news",
   events: "/events",
   activities: "/activities",
