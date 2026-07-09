@@ -7,6 +7,7 @@ import {
   Activity,
   CalendarDays,
   Image as ImageIcon,
+  Info,
   LayoutDashboard,
   Newspaper,
   Users,
@@ -29,6 +30,7 @@ import {
 
 const icons: Record<string, LucideIcon> = {
   [routes.admin.root]: LayoutDashboard,
+  [routes.admin.about]: Info,
   [routes.admin.news]: Newspaper,
   [routes.admin.events]: CalendarDays,
   [routes.admin.activities]: Activity,

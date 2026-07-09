@@ -10,6 +10,9 @@ export const routes = {
   contacts: "/contacts",
   admin: {
     root: "/admin",
+    about: "/admin/about",
+    aboutNew: "/admin/about/new",
+    aboutEdit: (slug: string) => `/admin/about/${slug}/edit`,
     news: "/admin/news",
     newsNew: "/admin/news/new",
     newsEdit: (id: number | string) => `/admin/news/${id}/edit`,
@@ -44,6 +47,7 @@ export const publicNavItems: NavItem[] = [
 
 export const adminNavItems: NavItem[] = [
   { href: routes.admin.root, label: "Панель керування" },
+  { href: routes.admin.about, label: "Про заклад" },
   { href: routes.admin.news, label: "Новини" },
   { href: routes.admin.events, label: "Події" },
   { href: routes.admin.activities, label: "Діяльність" },
