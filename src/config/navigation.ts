@@ -18,6 +18,8 @@ export const routes = {
     staffNew: "/admin/staff/new",
     staffEdit: (id: number | string) => `/admin/staff/${id}/edit`,
     gallery: "/admin/gallery",
+    galleryNew: "/admin/gallery/new",
+    galleryEdit: (id: number | string) => `/admin/gallery/${id}/edit`,
     login: "/admin/login"
   },
 } as const;

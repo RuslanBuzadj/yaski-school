@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, Calendar } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { routes } from "@/config/navigation";
 import type { GalleryAlbum } from "@/entities/gallery";
 import { GalleryGrid } from "@/entities/gallery";
@@ -23,10 +23,6 @@ export function GalleryAlbumPage({ album }: Props) {
         </Link>
 
         <div className="flex flex-col gap-3 mb-10">
-          <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-            <Calendar className="h-4 w-4" />
-            {album.date}
-          </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground">{album.title}</h1>
           <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
             {album.description}

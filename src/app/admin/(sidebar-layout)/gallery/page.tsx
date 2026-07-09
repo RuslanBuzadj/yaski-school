@@ -1,3 +1,5 @@
-export default function AdminGalleryPage() {
-  return <main><h1>Галерея — адмін</h1></main>;
+import { AdminGalleryPage } from "@/features/admin/gallery-page";
+
+export default function Page() {
+  return <AdminGalleryPage />;
 }

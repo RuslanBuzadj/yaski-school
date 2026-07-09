@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Calendar, Images } from "lucide-react";
+import { Images } from "lucide-react";
 import { routes } from "@/config/navigation";
 import { ImagePlaceholder } from "@/shared/ui/image-placeholder";
 import type { GalleryAlbum } from "../model/types";
@@ -20,10 +20,6 @@ export function GalleryCard({ album }: Props) {
         </div>
       </div>
       <div className="flex flex-col gap-1.5">
-        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-          <Calendar className="h-3.5 w-3.5" />
-          {album.date}
-        </div>
         <h3 className="font-semibold text-foreground group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 text-sm sm:text-base leading-snug">
           {album.title}
         </h3>

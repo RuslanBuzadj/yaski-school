@@ -6,7 +6,6 @@ export type GalleryImage = {
 
 export type GalleryAlbum = {
   id: number;
-  date: string;
   title: string;
   description: string;
   cover: string | null;
