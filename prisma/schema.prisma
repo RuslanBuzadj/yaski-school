@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum StaffGroup {
+  administration
+  staff
+}
+
+model News {
+  id        Int      @id @default(autoincrement())
+  title     String
+  excerpt   String
+  /// Rich-text HTML produced by the admin `TextEditor`; render with the `ck-content` class.
+  content   String?
+  image     String?
+  publishedAt DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("news")
+}
+
+model Event {
+  id        Int      @id @default(autoincrement())
+  title     String
+  excerpt   String
+  /// Rich-text HTML produced by the admin `TextEditor`; render with the `ck-content` class.
+  content   String?
+  image     String?
+  date      DateTime
+  time      String?
+  location  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("events")
+}
+
+model StaffMember {
+  id         Int        @id @default(autoincrement())
+  name       String
+  role       String
+  group      StaffGroup @default(staff)
+  image      String?
+  category   String?
+  education  String?
+  experience String?
+  subjects   String[]   @default([])
+  /// Rich-text HTML produced by the admin `TextEditor`; render with the `ck-content` class.
+  bio        String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  @@map("staff_members")
+}
+
+model GalleryAlbum {
+  id          Int            @id @default(autoincrement())
+  title       String
+  description String
+  cover       String?
+  images      GalleryImage[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@map("gallery_albums")
+}
+
+model GalleryImage {
+  id       Int          @id @default(autoincrement())
+  src      String
+  caption  String?
+  order    Int          @default(0)
+  album    GalleryAlbum @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  albumId  Int
+
+  @@map("gallery_images")
+}
+
+model AboutSection {
+  id        Int      @id @default(autoincrement())
+  slug      String   @unique
+  title     String
+  /// Rich-text HTML produced by the admin `TextEditor`; render with the `ck-content` class.
+  content   String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("about_sections")
+}
