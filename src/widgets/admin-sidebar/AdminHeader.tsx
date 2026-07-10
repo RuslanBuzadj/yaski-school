@@ -1,7 +1,9 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useTransition } from "react";
 import { LogOut, User } from "lucide-react";
+import { logout } from "@/features/admin/login-page";
 import { adminNavItems, routes } from "@/config/navigation";
 import { isActiveRoute } from "@/shared/lib/utils";
 import { Avatar, AvatarFallback } from "@/shared/ui/avatar";
@@ -17,13 +19,9 @@ import { Separator } from "@/shared/ui/separator";
 import { SidebarTrigger } from "@/shared/ui/sidebar";
 import { ThemeToggle } from "@/shared/ui/theme-toggle";
 
-const currentUser = {
-  name: "Олена Ковальчук",
-  email: "admin@yaski-school.ua",
-};
-
-export default function AdminHeader() {
+export default function AdminHeader({ email }: { email: string }) {
   const pathname = usePathname();
+  const [isLoggingOut, startLogoutTransition] = useTransition();
   const current = adminNavItems.find(({ href }) => isActiveRoute(pathname, href, routes.admin.root));
 
   return (
@@ -39,19 +37,20 @@ export default function AdminHeader() {
               <User className="size-3.5" />
             </AvatarFallback>
           </Avatar>
-          <span className="hidden font-medium sm:inline">{currentUser.name}</span>
+          <span className="hidden font-medium sm:inline">{email}</span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>
             <div className="flex flex-col">
-              <span className="font-medium">{currentUser.name}</span>
-              <span className="text-xs font-normal text-muted-foreground">
-                {currentUser.email}
-              </span>
+              <span className="font-medium">{email}</span>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">
+          <DropdownMenuItem
+            variant="destructive"
+            disabled={isLoggingOut}
+            onSelect={() => startLogoutTransition(() => logout())}
+          >
             <LogOut />
             <span>Вийти</span>
           </DropdownMenuItem>
