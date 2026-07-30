@@ -59,7 +59,10 @@ export function StaffProfile({ member }: Props) {
         {member.bio && (
           <div>
             <h2 className="text-lg font-semibold text-foreground mb-2">Про вчителя</h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">{member.bio}</p>
+            <div
+              className="ck-content text-sm sm:text-base text-muted-foreground leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: member.bio }}
+            />
           </div>
         )}
       </div>

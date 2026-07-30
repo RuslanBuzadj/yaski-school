@@ -3,11 +3,22 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu } from "lucide-react";
+import { LayoutDashboard, LogOut, Menu, User } from "lucide-react";
+import { useTransition } from "react";
+import { logout } from "@/features/admin/login-page";
 import { publicNavItems } from "@/config/navigation";
 import { routes } from "@/config/navigation";
 import { cn, isActiveRoute } from "@/shared/lib/utils";
+import { Avatar, AvatarFallback } from "@/shared/ui/avatar";
 import { Button } from "@/shared/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/shared/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/shared/ui/sheet";
 import { ThemeToggle } from "@/shared/ui/theme-toggle";
 import { useState } from "react";
@@ -62,7 +73,45 @@ function NavLink({
   );
 }
 
-export default function Header() {
+function AdminProfileMenu({ email }: { email: string }) {
+  const [isLoggingOut, startLogoutTransition] = useTransition();
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger className="flex items-center gap-2 rounded-full outline-hidden">
+        <Avatar size="sm">
+          <AvatarFallback>
+            <User className="size-3.5" />
+          </AvatarFallback>
+        </Avatar>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>
+          <div className="flex flex-col">
+            <span className="font-medium">{email}</span>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link href={routes.admin.root}>
+            <LayoutDashboard />
+            <span>Адмін панель</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          variant="destructive"
+          disabled={isLoggingOut}
+          onSelect={() => startLogoutTransition(() => logout())}
+        >
+          <LogOut />
+          <span>Вийти</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+export default function Header({ adminEmail }: { adminEmail?: string | null }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -93,6 +142,7 @@ export default function Header() {
 
         {/* Right controls */}
         <div className="flex items-center gap-2 flex-1 justify-end">
+          {adminEmail && <AdminProfileMenu email={adminEmail} />}
           <ThemeToggle />
           <Button variant={'yellow'} className=" hidden md:inline-flex px-5 py-2" asChild>
               <Link

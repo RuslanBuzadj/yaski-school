@@ -1,13 +1,11 @@
 import { StaffCard, type StaffMember } from "@/entities/staff";
 import { PageBreadcrumb } from "@/widgets/breadcrumb";
-import { useSearchParams } from "next/navigation";
 
 type StaffPageProps = {
   staff: StaffMember[];
 };
 
 export function StaffPage({ staff: allStaff }: StaffPageProps) {
-  const params = useSearchParams()
   const administration = allStaff.filter((member) => member.group === "administration");
   const staff = allStaff.filter((member) => member.group === "staff");
 
