@@ -11,27 +11,53 @@ import {
   FileUploadItemPreview,
 } from "@/shared/ui/file-upload";
 
+/**
+ * `{ kind: "existing" }` previews an already-saved photo URL (edit mode) —
+ * `FileUpload`/`FileUploadItemPreview` only know how to preview `File`
+ * objects, so that case is rendered as a plain `<img>` instead of routing
+ * through `FileUpload`.
+ */
+export type UploadPhotoValue = { kind: "existing"; url: string } | { kind: "new"; file: File } | { kind: "none" };
+
 type UploadPhotoProps = {
-  value: File[];
-  onValueChange: (files: File[]) => void;
+  value: UploadPhotoValue;
+  onValueChange: (value: UploadPhotoValue) => void;
   accept?: string;
   className?: string;
 };
 
 export function UploadPhoto({ value, onValueChange, accept = "image/*", className }: UploadPhotoProps) {
-  const file = value[0];
+  if (value.kind === "existing") {
+    return (
+      <div className={cn("relative size-28 shrink-0 overflow-hidden rounded-full border", className)}>
+        {/* eslint-disable-next-line @next/next/no-img-element -- arbitrary Supabase Storage URL, not a static/known-domain asset */}
+        <img src={value.url} alt="" className="size-full object-cover" />
+        <Button
+          type="button"
+          variant="secondary"
+          size="icon-xs"
+          className="absolute right-0 bottom-0 rounded-full border shadow-sm"
+          onClick={() => onValueChange({ kind: "none" })}
+        >
+          <X />
+        </Button>
+      </div>
+    );
+  }
+
+  const files = value.kind === "new" ? [value.file] : [];
 
   return (
     <FileUpload
-      value={value}
-      onValueChange={onValueChange}
+      value={files}
+      onValueChange={(next) => onValueChange(next[0] ? { kind: "new", file: next[0] } : { kind: "none" })}
       accept={accept}
       maxFiles={1}
       className={cn("w-fit", className)}
     >
-      {file ? (
+      {value.kind === "new" ? (
         <FileUploadItem
-          value={file}
+          value={value.file}
           className="relative size-28 shrink-0 items-center justify-center rounded-full border-0 p-0"
         >
           <FileUploadItemPreview className="size-full rounded-full [&>svg]:size-10" />

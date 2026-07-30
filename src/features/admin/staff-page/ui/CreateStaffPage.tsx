@@ -1,6 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { createStaffMember } from "@/entities/staff/api/actions";
 import { routes } from "@/config/navigation";
 import { staffFormDefaultValues } from "../model/schema";
 import { StaffForm } from "./StaffForm";
@@ -12,8 +14,15 @@ export function CreateStaffPage() {
     <StaffForm
       mode="create"
       defaultValues={staffFormDefaultValues}
-      onSubmit={() => {
-        // TODO: implement once backend is ready
+      onSubmit={async (values, photo) => {
+        const result = await createStaffMember(values, photo ?? null);
+
+        if ("error" in result) {
+          toast.error(result.error);
+          return;
+        }
+
+        toast.success("Співробітника додано");
         router.push(routes.admin.staff);
       }}
     />

@@ -10,7 +10,6 @@ export const staffFormSchema = z.object({
   experience: z.string().trim().optional(),
   subjects: z.array(z.string()),
   bio: z.string().optional(),
-  image: z.string().nullable().optional(),
 });
 
 export type StaffFormValues = z.infer<typeof staffFormSchema>;
@@ -24,7 +23,6 @@ export const staffFormDefaultValues: StaffFormValues = {
   experience: "",
   subjects: [],
   bio: "",
-  image: null,
 };
 
 export function staffMemberToFormValues(member: StaffMember): StaffFormValues {
@@ -37,6 +35,5 @@ export function staffMemberToFormValues(member: StaffMember): StaffFormValues {
     experience: member.experience ?? "",
     subjects: member.subjects ?? [],
     bio: member.bio ?? "",
-    image: member.image ?? null,
   };
 }

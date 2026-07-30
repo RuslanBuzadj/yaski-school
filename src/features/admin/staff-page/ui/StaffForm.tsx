@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, type Resolver, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { routes } from "@/config/navigation";
 import { staffGroupOptions } from "@/entities/staff";
 import { cn } from "@/shared/lib/utils";
@@ -13,7 +14,7 @@ import { Checkbox } from "@/shared/ui/checkbox";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/shared/ui/field";
 import { Input } from "@/shared/ui/input";
 import { TagsInput, TagsInputInput, TagsInputItem, TagsInputList } from "@/shared/ui/tags-input";
-import { UploadPhoto } from "@/shared/ui/upload-photo";
+import { UploadPhoto, type UploadPhotoValue } from "@/shared/ui/upload-photo";
 import { type StaffFormValues, staffFormSchema } from "../model/schema";
 
 const TextEditor = dynamic(() => import("@/shared/ui/text-editor"), { ssr: false });
@@ -21,12 +22,21 @@ const TextEditor = dynamic(() => import("@/shared/ui/text-editor"), { ssr: false
 type StaffFormProps = {
   mode: "create" | "edit";
   defaultValues: StaffFormValues;
-  onSubmit: (values: StaffFormValues) => void;
+  /** Existing photo URL to preview in edit mode; omit/null for create. */
+  defaultImageUrl?: string | null;
+  /**
+   * `photo` mirrors the create/update actions' contract: `undefined` = keep
+   * the current photo (edit only), `null` = no/removed photo, `File` = a
+   * newly picked one.
+   */
+  onSubmit: (values: StaffFormValues, photo: File | null | undefined) => Promise<void>;
 };
 
-export function StaffForm({ mode, defaultValues, onSubmit }: StaffFormProps) {
+export function StaffForm({ mode, defaultValues, defaultImageUrl, onSubmit }: StaffFormProps) {
   const router = useRouter();
-  const [photoFiles, setPhotoFiles] = useState<File[]>([]);
+  const [photo, setPhoto] = useState<UploadPhotoValue>(
+    defaultImageUrl ? { kind: "existing", url: defaultImageUrl } : { kind: "none" },
+  );
 
   const {
     control,
@@ -41,8 +51,17 @@ export function StaffForm({ mode, defaultValues, onSubmit }: StaffFormProps) {
     defaultValues,
   });
 
+  async function handleFormSubmit(values: StaffFormValues) {
+    try {
+      const resolvedPhoto = photo.kind === "new" ? photo.file : photo.kind === "existing" ? undefined : null;
+      await onSubmit(values, resolvedPhoto);
+    } catch {
+      toast.error("Не вдалося зберегти дані. Спробуйте ще раз.");
+    }
+  }
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex min-h-0 flex-1 flex-col gap-4">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="flex min-h-0 flex-1 flex-col gap-4">
       <div className="flex shrink-0 items-center justify-between gap-4">
         <div>
           <h1 className="text-lg font-semibold text-foreground">
@@ -68,7 +87,7 @@ export function StaffForm({ mode, defaultValues, onSubmit }: StaffFormProps) {
         <FieldGroup className="max-w-2xl">
           <Field>
             <FieldLabel>Фото</FieldLabel>
-            <UploadPhoto value={photoFiles} onValueChange={setPhotoFiles} />
+            <UploadPhoto value={photo} onValueChange={setPhoto} />
           </Field>
 
           <Field data-invalid={!!errors.name}>

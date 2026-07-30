@@ -1,16 +1,10 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { Pencil, Trash2 } from "lucide-react";
 import { staffGroupLabels, type StaffMember } from "@/entities/staff";
-import { routes } from "@/config/navigation";
 import { getInitials } from "@/shared/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
-import { RowActions } from "@/shared/ui/row-actions";
-
-function handleDeleteStaff() {
-  // TODO: implement once backend is ready
-}
+import { StaffRowActions } from "../ui/StaffRowActions";
 
 export function useStaffColumns(): ColumnDef<StaffMember>[] {
   return [
@@ -61,23 +55,7 @@ export function useStaffColumns(): ColumnDef<StaffMember>[] {
     {
       id: "actions",
       header: "",
-      cell: ({ row }) => (
-        <RowActions
-          actions={[
-            {
-              label: "Редагувати",
-              icon: <Pencil />,
-              href: routes.admin.staffEdit(row.original.id),
-            },
-            {
-              label: "Видалити",
-              icon: <Trash2 />,
-              variant: "destructive",
-              onSelect: handleDeleteStaff,
-            },
-          ]}
-        />
-      ),
+      cell: ({ row }) => <StaffRowActions member={row.original} />,
     },
   ];
 }

@@ -1,9 +1,15 @@
-import { StaffCard, mockStaff } from "@/entities/staff";
+import { StaffCard, type StaffMember } from "@/entities/staff";
 import { PageBreadcrumb } from "@/widgets/breadcrumb";
+import { useSearchParams } from "next/navigation";
 
-export function StaffPage() {
-  const administration = mockStaff.filter((member) => member.group === "administration");
-  const staff = mockStaff.filter((member) => member.group === "staff");
+type StaffPageProps = {
+  staff: StaffMember[];
+};
+
+export function StaffPage({ staff: allStaff }: StaffPageProps) {
+  const params = useSearchParams()
+  const administration = allStaff.filter((member) => member.group === "administration");
+  const staff = allStaff.filter((member) => member.group === "staff");
 
   return (
     <section className="py-16 sm:py-20">

@@ -18,6 +18,12 @@ export function toIdParams<T extends { id: number }>(list: T[]): { id: string }[
   return list.map((item) => ({ id: String(item.id) }))
 }
 
+/** Parses a route's `id` param into a numeric DB id, or `null` if it isn't one. */
+export function parseId(id: string): number | null {
+  const numericId = Number(id)
+  return Number.isInteger(numericId) ? numericId : null
+}
+
 const CYRILLIC_TO_LATIN: Record<string, string> = {
   а: "a", б: "b", в: "v", г: "h", ґ: "g", д: "d", е: "e", є: "ie", ж: "zh",
   з: "z", и: "y", і: "i", ї: "i", й: "i", к: "k", л: "l", м: "m", н: "n",

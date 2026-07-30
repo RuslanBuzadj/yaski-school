@@ -1,5 +1,6 @@
 import { ThemeProvider } from '@/widgets/providers/theme-provider'
 import { cn } from '@/shared/lib/utils'
+import { Toaster } from '@/shared/ui/sonner'
 import { TooltipProvider } from '@/shared/ui/tooltip'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono, Inter } from 'next/font/google'
@@ -48,6 +49,7 @@ export default function RootLayout({
 					disableTransitionOnChange
 				>
 					<TooltipProvider>{children}</TooltipProvider>
+					<Toaster />
 				</ThemeProvider>
 			</body>
 		</html>

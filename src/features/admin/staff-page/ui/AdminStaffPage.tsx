@@ -3,12 +3,16 @@
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { routes } from "@/config/navigation";
-import { mockStaff } from "@/entities/staff";
+import type { StaffMember } from "@/entities/staff";
 import { Button } from "@/shared/ui/button";
 import { DataTable } from "@/widgets/data-table";
 import { useStaffColumns } from "../model/use-staff-columns";
 
-export function AdminStaffPage() {
+type AdminStaffPageProps = {
+  staff: StaffMember[];
+};
+
+export function AdminStaffPage({ staff }: AdminStaffPageProps) {
   const columns = useStaffColumns();
 
   return (
@@ -28,7 +32,7 @@ export function AdminStaffPage() {
         </Button>
       </div>
 
-      <DataTable columns={columns} data={mockStaff} />
+      <DataTable columns={columns} data={staff} />
     </div>
   );
 }
