@@ -1,7 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { updateNews } from "@/entities/news/api/actions";
 import type { News } from "@/entities/news";
+import { toast } from "sonner";
 import { routes } from "@/config/navigation";
 import { newsToFormValues } from "../model/schema";
 import { NewsForm } from "./NewsForm";
@@ -17,8 +19,16 @@ export function EditNewsPage({ news }: EditNewsPageProps) {
     <NewsForm
       mode="edit"
       defaultValues={newsToFormValues(news)}
-      onSubmit={() => {
-        // TODO: implement once backend is ready
+      defaultImageUrl={news.image}
+      onSubmit={async (values, photo, sessionUploadedContentUrls) => {
+        const result = await updateNews(news.id, values, photo, sessionUploadedContentUrls);
+
+        if ("error" in result) {
+          toast.error(result.error);
+          return;
+        }
+
+        toast.success("Зміни збережено");
         router.push(routes.admin.news);
       }}
     />

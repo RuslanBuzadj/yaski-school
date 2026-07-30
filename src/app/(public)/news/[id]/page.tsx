@@ -1,27 +1,25 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { mockNews } from "@/entities/news";
+import { getNewsItem } from "@/entities/news/api/queries";
 import { NewsArticlePage } from "@/features/news-article-page";
-import { findById, toIdParams } from "@/shared/lib/utils";
+import { parseId } from "@/shared/lib/utils";
 
 type Props = {
   params: Promise<{ id: string }>;
 };
 
-export function generateStaticParams() {
-  return toIdParams(mockNews);
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const news = findById(mockNews, id);
+  const numericId = parseId(id);
+  const news = numericId !== null ? await getNewsItem(numericId) : null;
 
   return { title: news ? news.title : "Новини" };
 }
 
 export default async function NewsItemPage({ params }: Props) {
   const { id } = await params;
-  const news = findById(mockNews, id);
+  const numericId = parseId(id);
+  const news = numericId !== null ? await getNewsItem(numericId) : null;
 
   if (!news) {
     notFound();

@@ -13,6 +13,7 @@ import { Input } from "@/shared/ui/input";
 import { Textarea } from "@/shared/ui/textarea";
 import { UploadGallery } from "@/shared/ui/upload-gallery";
 import { UploadImage } from "@/shared/ui/upload-image";
+import type { UploadPhotoValue } from "@/shared/ui/upload-photo";
 import { type GalleryFormValues, galleryFormSchema } from "../model/schema";
 
 type GalleryFormProps = {
@@ -23,7 +24,7 @@ type GalleryFormProps = {
 
 export function GalleryForm({ mode, defaultValues, onSubmit }: GalleryFormProps) {
   const router = useRouter();
-  const [coverFiles, setCoverFiles] = useState<File[]>([]);
+  const [cover, setCover] = useState<UploadPhotoValue>({ kind: "none" });
   const [newImageFiles, setNewImageFiles] = useState<File[]>([]);
 
   const {
@@ -68,7 +69,7 @@ export function GalleryForm({ mode, defaultValues, onSubmit }: GalleryFormProps)
         <FieldGroup className="max-w-2xl">
           <Field>
             <FieldLabel>Обкладинка</FieldLabel>
-            <UploadImage value={coverFiles} onValueChange={setCoverFiles} />
+            <UploadImage value={cover} onValueChange={setCover} />
           </Field>
 
           <Field data-invalid={!!errors.title}>

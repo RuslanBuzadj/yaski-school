@@ -1,7 +1,11 @@
-import { NewsCard, mockNews } from "@/entities/news";
+import { NewsCard, type News } from "@/entities/news";
 import { PageBreadcrumb } from "@/widgets/breadcrumb";
 
-export function NewsPage() {
+type NewsPageProps = {
+  news: News[];
+};
+
+export function NewsPage({ news }: NewsPageProps) {
   return (
     <section className="py-16 sm:py-20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
@@ -13,7 +17,7 @@ export function NewsPage() {
         </div>
 
         <div className="flex flex-col divide-y divide-border">
-          {mockNews.map((item) => (
+          {news.map((item) => (
             <NewsCard key={item.id} news={item} />
           ))}
         </div>

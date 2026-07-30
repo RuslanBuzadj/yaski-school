@@ -1,15 +1,9 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { Pencil, Trash2 } from "lucide-react";
 import type { Event } from "@/entities/events";
-import { routes } from "@/config/navigation";
 import { ImagePlaceholder } from "@/shared/ui/image-placeholder";
-import { RowActions } from "@/shared/ui/row-actions";
-
-function handleDeleteEvent() {
-  // TODO: implement once backend is ready
-}
+import { EventRowActions } from "../ui/EventRowActions";
 
 export function useEventsColumns(): ColumnDef<Event>[] {
   return [
@@ -53,23 +47,7 @@ export function useEventsColumns(): ColumnDef<Event>[] {
     {
       id: "actions",
       header: "",
-      cell: ({ row }) => (
-        <RowActions
-          actions={[
-            {
-              label: "Редагувати",
-              icon: <Pencil />,
-              href: routes.admin.eventsEdit(row.original.id),
-            },
-            {
-              label: "Видалити",
-              icon: <Trash2 />,
-              variant: "destructive",
-              onSelect: handleDeleteEvent,
-            },
-          ]}
-        />
-      ),
+      cell: ({ row }) => <EventRowActions event={row.original} />,
     },
   ];
 }

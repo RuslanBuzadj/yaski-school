@@ -9,3 +9,19 @@ export type Event = {
   content?: string;
   image?: string | null;
 };
+
+/**
+ * Plain structural contract accepted by the create/update Server Actions.
+ * Lives here (not re-exported from `features/admin/events-page`) so the
+ * `entities` layer never imports from `features`, per the FSD layer rule —
+ * the feature's zod-inferred `EventFormValues` already satisfies this shape.
+ * `date` is the same `dd.MM.yyyy` string the `DatePicker` produces.
+ */
+export type EventInput = {
+  title: string;
+  date: string;
+  time?: string;
+  location?: string;
+  excerpt: string;
+  content?: string;
+};

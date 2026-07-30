@@ -3,12 +3,16 @@
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { routes } from "@/config/navigation";
-import { mockEvents } from "@/entities/events";
+import type { Event } from "@/entities/events";
 import { Button } from "@/shared/ui/button";
 import { DataTable } from "@/widgets/data-table";
 import { useEventsColumns } from "../model/use-events-columns";
 
-export function AdminEventsPage() {
+type AdminEventsPageProps = {
+  events: Event[];
+};
+
+export function AdminEventsPage({ events }: AdminEventsPageProps) {
   const columns = useEventsColumns();
 
   return (
@@ -28,7 +32,7 @@ export function AdminEventsPage() {
         </Button>
       </div>
 
-      <DataTable columns={columns} data={mockEvents} />
+      <DataTable columns={columns} data={events} />
     </div>
   );
 }

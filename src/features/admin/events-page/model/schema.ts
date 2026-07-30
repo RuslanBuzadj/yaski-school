@@ -8,7 +8,6 @@ export const eventFormSchema = z.object({
   location: z.string().trim().optional(),
   excerpt: z.string().trim().min(1, "Вкажіть короткий опис"),
   content: z.string().optional(),
-  image: z.string().nullable().optional(),
 });
 
 export type EventFormValues = z.infer<typeof eventFormSchema>;
@@ -20,7 +19,6 @@ export const eventFormDefaultValues: EventFormValues = {
   location: "",
   excerpt: "",
   content: "",
-  image: null,
 };
 
 export function eventToFormValues(event: Event): EventFormValues {
@@ -31,6 +29,5 @@ export function eventToFormValues(event: Event): EventFormValues {
     location: event.location ?? "",
     excerpt: event.excerpt,
     content: event.content ?? "",
-    image: event.image ?? null,
   };
 }

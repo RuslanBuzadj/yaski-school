@@ -1,15 +1,9 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { Pencil, Trash2 } from "lucide-react";
 import type { News } from "@/entities/news";
-import { routes } from "@/config/navigation";
 import { ImagePlaceholder } from "@/shared/ui/image-placeholder";
-import { RowActions } from "@/shared/ui/row-actions";
-
-function handleDeleteNews() {
-  // TODO: implement once backend is ready
-}
+import { NewsRowActions } from "../ui/NewsRowActions";
 
 export function useNewsColumns(): ColumnDef<News>[] {
   return [
@@ -39,23 +33,7 @@ export function useNewsColumns(): ColumnDef<News>[] {
     {
       id: "actions",
       header: "",
-      cell: ({ row }) => (
-        <RowActions
-          actions={[
-            {
-              label: "Редагувати",
-              icon: <Pencil />,
-              href: routes.admin.newsEdit(row.original.id),
-            },
-            {
-              label: "Видалити",
-              icon: <Trash2 />,
-              variant: "destructive",
-              onSelect: handleDeleteNews,
-            },
-          ]}
-        />
-      ),
+      cell: ({ row }) => <NewsRowActions news={row.original} />,
     },
   ];
 }

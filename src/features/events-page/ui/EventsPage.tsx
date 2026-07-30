@@ -1,7 +1,11 @@
-import { EventCard, mockEvents } from "@/entities/events";
+import { EventCard, type Event } from "@/entities/events";
 import { PageBreadcrumb } from "@/widgets/breadcrumb";
 
-export function EventsPage() {
+type EventsPageProps = {
+  events: Event[];
+};
+
+export function EventsPage({ events }: EventsPageProps) {
   return (
     <section className="py-16 sm:py-20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
@@ -13,7 +17,7 @@ export function EventsPage() {
         </div>
 
         <div className="flex flex-col divide-y divide-border">
-          {mockEvents.map((item) => (
+          {events.map((item) => (
             <EventCard key={item.id} event={item} />
           ))}
         </div>

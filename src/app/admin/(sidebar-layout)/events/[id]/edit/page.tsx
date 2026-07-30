@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { EditEventPage } from "@/features/admin/events-page";
-import { mockEvents } from "@/entities/events";
-import { findById } from "@/shared/lib/utils";
+import { getEvent } from "@/entities/events/api/queries";
+import { parseId } from "@/shared/lib/utils";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -9,7 +9,8 @@ type PageProps = {
 
 export default async function Page({ params }: PageProps) {
   const { id } = await params;
-  const event = findById(mockEvents, id);
+  const numericId = parseId(id);
+  const event = numericId !== null ? await getEvent(numericId) : null;
 
   if (!event) {
     notFound();

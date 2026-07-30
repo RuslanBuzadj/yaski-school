@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { EditNewsPage } from "@/features/admin/news-page";
-import { mockNews } from "@/entities/news";
-import { findById } from "@/shared/lib/utils";
+import { getNewsItem } from "@/entities/news/api/queries";
+import { parseId } from "@/shared/lib/utils";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -9,7 +9,8 @@ type PageProps = {
 
 export default async function Page({ params }: PageProps) {
   const { id } = await params;
-  const news = findById(mockNews, id);
+  const numericId = parseId(id);
+  const news = numericId !== null ? await getNewsItem(numericId) : null;
 
   if (!news) {
     notFound();

@@ -3,12 +3,16 @@
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { routes } from "@/config/navigation";
-import { mockNews } from "@/entities/news";
+import type { News } from "@/entities/news";
 import { Button } from "@/shared/ui/button";
 import { DataTable } from "@/widgets/data-table";
 import { useNewsColumns } from "../model/use-news-columns";
 
-export function AdminNewsPage() {
+type AdminNewsPageProps = {
+  news: News[];
+};
+
+export function AdminNewsPage({ news }: AdminNewsPageProps) {
   const columns = useNewsColumns();
 
   return (
@@ -28,7 +32,7 @@ export function AdminNewsPage() {
         </Button>
       </div>
 
-      <DataTable columns={columns} data={mockNews} />
+      <DataTable columns={columns} data={news} />
     </div>
   );
 }
