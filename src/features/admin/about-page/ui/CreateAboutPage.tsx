@@ -1,6 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { createAboutSection } from "@/entities/school/api/actions";
 import { routes } from "@/config/navigation";
 import { aboutSectionFormDefaultValues } from "../model/schema";
 import { AboutSectionForm } from "./AboutSectionForm";
@@ -12,8 +14,15 @@ export function CreateAboutPage() {
     <AboutSectionForm
       mode="create"
       defaultValues={aboutSectionFormDefaultValues}
-      onSubmit={() => {
-        // TODO: implement once backend is ready
+      onSubmit={async (values) => {
+        const result = await createAboutSection(values);
+
+        if ("error" in result) {
+          toast.error(result.error);
+          return;
+        }
+
+        toast.success("Розділ додано");
         router.push(routes.admin.about);
       }}
     />

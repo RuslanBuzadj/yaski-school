@@ -3,12 +3,16 @@
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { routes } from "@/config/navigation";
-import { aboutSections } from "@/entities/school";
+import type { AboutSection } from "@/entities/school";
 import { Button } from "@/shared/ui/button";
 import { DataTable } from "@/widgets/data-table";
 import { useAboutColumns } from "../model/use-about-columns";
 
-export function AdminAboutPage() {
+type AdminAboutPageProps = {
+  sections: AboutSection[];
+};
+
+export function AdminAboutPage({ sections }: AdminAboutPageProps) {
   const columns = useAboutColumns();
 
   return (
@@ -28,7 +32,7 @@ export function AdminAboutPage() {
         </Button>
       </div>
 
-      <DataTable columns={columns} data={aboutSections} />
+      <DataTable columns={columns} data={sections} />
     </div>
   );
 }

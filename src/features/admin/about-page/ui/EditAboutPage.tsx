@@ -1,6 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { updateAboutSection } from "@/entities/school/api/actions";
 import type { AboutSection } from "@/entities/school";
 import { routes } from "@/config/navigation";
 import { aboutSectionToFormValues } from "../model/schema";
@@ -17,8 +19,15 @@ export function EditAboutPage({ section }: EditAboutPageProps) {
     <AboutSectionForm
       mode="edit"
       defaultValues={aboutSectionToFormValues(section)}
-      onSubmit={() => {
-        // TODO: implement once backend is ready
+      onSubmit={async (values) => {
+        const result = await updateAboutSection(section.slug, values);
+
+        if ("error" in result) {
+          toast.error(result.error);
+          return;
+        }
+
+        toast.success("Зміни збережено");
         router.push(routes.admin.about);
       }}
     />

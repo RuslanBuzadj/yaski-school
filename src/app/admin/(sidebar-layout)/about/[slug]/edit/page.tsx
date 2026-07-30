@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { EditAboutPage } from "@/features/admin/about-page";
-import { aboutSections } from "@/entities/school";
-import { findBySlug } from "@/shared/lib/utils";
+import { getAboutSection } from "@/entities/school/api/queries";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -9,7 +8,7 @@ type PageProps = {
 
 export default async function Page({ params }: PageProps) {
   const { slug } = await params;
-  const section = findBySlug(aboutSections, slug);
+  const section = await getAboutSection(slug);
 
   if (!section) {
     notFound();

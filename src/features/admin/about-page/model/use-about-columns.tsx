@@ -1,14 +1,8 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { Pencil, Trash2 } from "lucide-react";
 import type { AboutSection } from "@/entities/school";
-import { routes } from "@/config/navigation";
-import { RowActions } from "@/shared/ui/row-actions";
-
-function handleDeleteAboutSection() {
-  // TODO: implement once backend is ready
-}
+import { AboutSectionRowActions } from "../ui/AboutSectionRowActions";
 
 export function useAboutColumns(): ColumnDef<AboutSection>[] {
   return [
@@ -31,23 +25,7 @@ export function useAboutColumns(): ColumnDef<AboutSection>[] {
     {
       id: "actions",
       header: "",
-      cell: ({ row }) => (
-        <RowActions
-          actions={[
-            {
-              label: "Редагувати",
-              icon: <Pencil />,
-              href: routes.admin.aboutEdit(row.original.slug),
-            },
-            {
-              label: "Видалити",
-              icon: <Trash2 />,
-              variant: "destructive",
-              onSelect: handleDeleteAboutSection,
-            },
-          ]}
-        />
-      ),
+      cell: ({ row }) => <AboutSectionRowActions section={row.original} />,
     },
   ];
 }

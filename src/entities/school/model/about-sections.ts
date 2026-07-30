@@ -5,6 +5,12 @@ export type AboutSection = {
   content: string;
 };
 
+export type AboutSectionInput = {
+  slug: string;
+  title: string;
+  content?: string;
+};
+
 export const aboutSections: AboutSection[] = [
   {
     slug: "istorychna-dovidka",

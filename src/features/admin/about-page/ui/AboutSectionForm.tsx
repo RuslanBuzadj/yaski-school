@@ -17,7 +17,7 @@ const TextEditor = dynamic(() => import("@/shared/ui/text-editor"), { ssr: false
 type AboutSectionFormProps = {
   mode: "create" | "edit";
   defaultValues: AboutSectionFormValues;
-  onSubmit: (values: AboutSectionFormValues) => void;
+  onSubmit: (values: AboutSectionFormValues) => void | Promise<void>;
 };
 
 export function AboutSectionForm({ mode, defaultValues, onSubmit }: AboutSectionFormProps) {

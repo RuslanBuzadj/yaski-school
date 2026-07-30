@@ -1,14 +1,15 @@
 import { routes } from "@/config/navigation";
-import { aboutSections, type AboutSection } from "@/entities/school";
+import type { AboutSection } from "@/entities/school";
 import { PageBreadcrumb } from "@/widgets/breadcrumb";
 import { AboutBanner } from "./AboutBanner";
 import { AboutSidebar } from "./AboutSidebar";
 
 type Props = {
   section: AboutSection;
+  sections: AboutSection[];
 };
 
-export function AboutSectionPage({ section }: Props) {
+export function AboutSectionPage({ section, sections }: Props) {
   return (
     <>
       <AboutBanner />
@@ -18,7 +19,7 @@ export function AboutSectionPage({ section }: Props) {
           <PageBreadcrumb items={[{ label: "Про заклад", href: routes.about }, { label: section.title }]} />
 
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-[300px_1fr] lg:items-start lg:gap-8">
-            <AboutSidebar sections={aboutSections} className="lg:sticky lg:top-24" />
+            <AboutSidebar sections={sections} className="lg:sticky lg:top-24" />
 
             <article className="rounded-2xl bg-card p-6 ring-1 ring-foreground/10 sm:p-10">
               <h2 className="font-heading text-2xl font-bold text-foreground sm:text-3xl">{section.title}</h2>
