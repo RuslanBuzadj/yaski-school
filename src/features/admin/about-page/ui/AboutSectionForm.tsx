@@ -17,12 +17,13 @@ const TextEditor = dynamic(() => import("@/shared/ui/text-editor"), { ssr: false
 type AboutSectionFormProps = {
   mode: "create" | "edit";
   defaultValues: AboutSectionFormValues;
-  onSubmit: (values: AboutSectionFormValues) => void | Promise<void>;
+  onSubmit: (values: AboutSectionFormValues, sessionUploadedUrls: string[]) => void | Promise<void>;
 };
 
 export function AboutSectionForm({ mode, defaultValues, onSubmit }: AboutSectionFormProps) {
   const router = useRouter();
   const slugTouchedRef = useRef(mode === "edit");
+  const uploadedUrlsRef = useRef<string[]>([]);
 
   const {
     control,
@@ -41,8 +42,17 @@ export function AboutSectionForm({ mode, defaultValues, onSubmit }: AboutSection
   const titleField = register("title");
   const slugField = register("slug");
 
+  function handleFormSubmit(values: AboutSectionFormValues) {
+    return onSubmit(values, uploadedUrlsRef.current);
+  }
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex min-h-0 flex-1 flex-col gap-4">
+    <form
+      onSubmit={(event) => {
+        void handleSubmit(handleFormSubmit)(event);
+      }}
+      className="flex min-h-0 flex-1 flex-col gap-4"
+    >
       <div className="flex shrink-0 items-center justify-between gap-4">
         <div>
           <h1 className="text-lg font-semibold text-foreground">
@@ -99,7 +109,13 @@ export function AboutSectionForm({ mode, defaultValues, onSubmit }: AboutSection
             <Controller
               control={control}
               name="content"
-              render={({ field }) => <TextEditor value={field.value ?? ""} onChange={field.onChange} />}
+              render={({ field }) => (
+                <TextEditor
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  onImageUpload={(url) => uploadedUrlsRef.current.push(url)}
+                />
+              )}
             />
           </Field>
         </FieldGroup>

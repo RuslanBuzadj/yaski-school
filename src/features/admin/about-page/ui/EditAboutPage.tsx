@@ -19,8 +19,8 @@ export function EditAboutPage({ section }: EditAboutPageProps) {
     <AboutSectionForm
       mode="edit"
       defaultValues={aboutSectionToFormValues(section)}
-      onSubmit={async (values) => {
-        const result = await updateAboutSection(section.slug, values);
+      onSubmit={async (values, sessionUploadedUrls) => {
+        const result = await updateAboutSection(section.slug, values, sessionUploadedUrls);
 
         if ("error" in result) {
           toast.error(result.error);

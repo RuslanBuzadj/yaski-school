@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { routes } from "@/config/navigation";
 import { prisma } from "@/shared/lib/prisma";
 import { requireAdmin, UnauthorizedError } from "@/shared/api/auth";
+import { cleanupContentImages, cleanupRemovedContentImages } from "@/shared/api/storage";
 import type { AboutSectionInput } from "../model/about-sections";
 
 type ActionResult = { error: string } | { success: true };
@@ -14,7 +15,10 @@ function toErrorMessage(error: unknown): string {
   return "Сталася помилка. Спробуйте ще раз.";
 }
 
-export async function createAboutSection(input: AboutSectionInput): Promise<ActionResult> {
+export async function createAboutSection(
+  input: AboutSectionInput,
+  sessionUploadedUrls: string[] = []
+): Promise<ActionResult> {
   try {
     await requireAdmin();
 
@@ -28,6 +32,8 @@ export async function createAboutSection(input: AboutSectionInput): Promise<Acti
       data: { slug: input.slug, title: input.title, content: input.content || null, order: count },
     });
 
+    await cleanupRemovedContentImages(null, input.content, sessionUploadedUrls);
+
     revalidatePath(routes.admin.about);
     revalidatePath(routes.about);
     return { success: true };
@@ -36,7 +42,11 @@ export async function createAboutSection(input: AboutSectionInput): Promise<Acti
   }
 }
 
-export async function updateAboutSection(currentSlug: string, input: AboutSectionInput): Promise<ActionResult> {
+export async function updateAboutSection(
+  currentSlug: string,
+  input: AboutSectionInput,
+  sessionUploadedUrls: string[] = []
+): Promise<ActionResult> {
   try {
     await requireAdmin();
 
@@ -57,6 +67,8 @@ export async function updateAboutSection(currentSlug: string, input: AboutSectio
       data: { slug: input.slug, title: input.title, content: input.content || null },
     });
 
+    await cleanupRemovedContentImages(existing.content, input.content, sessionUploadedUrls);
+
     revalidatePath(routes.admin.about);
     revalidatePath(routes.about);
     revalidatePath(routes.aboutSection(currentSlug));
@@ -71,7 +83,8 @@ export async function deleteAboutSection(slug: string): Promise<ActionResult> {
   try {
     await requireAdmin();
 
-    await prisma.aboutSection.delete({ where: { slug } });
+    const deleted = await prisma.aboutSection.delete({ where: { slug } });
+    await cleanupContentImages(deleted.content);
 
     revalidatePath(routes.admin.about);
     revalidatePath(routes.about);

@@ -14,8 +14,8 @@ export function CreateAboutPage() {
     <AboutSectionForm
       mode="create"
       defaultValues={aboutSectionFormDefaultValues}
-      onSubmit={async (values) => {
-        const result = await createAboutSection(values);
+      onSubmit={async (values, sessionUploadedUrls) => {
+        const result = await createAboutSection(values, sessionUploadedUrls);
 
         if ("error" in result) {
           toast.error(result.error);

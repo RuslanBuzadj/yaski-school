@@ -58,5 +58,12 @@ export async function deleteImage(publicUrl: string): Promise<void> {
 
   const path = publicUrl.slice(markerIndex + PUBLIC_URL_MARKER.length);
   const supabase = createAdminClient();
-  await supabase.storage.from(BUCKET).remove([path]);
+  const { error } = await supabase.storage.from(BUCKET).remove([path]);
+
+  // Best-effort: a failed storage delete shouldn't fail the DB mutation that
+  // triggered it, but a silently swallowed error made this exact class of
+  // bug ("removed from content, still in storage") impossible to diagnose.
+  if (error) {
+    console.error(`Failed to delete storage object "${path}":`, error);
+  }
 }

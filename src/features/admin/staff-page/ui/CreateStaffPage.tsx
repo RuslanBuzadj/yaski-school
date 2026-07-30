@@ -14,8 +14,8 @@ export function CreateStaffPage() {
     <StaffForm
       mode="create"
       defaultValues={staffFormDefaultValues}
-      onSubmit={async (values, photo) => {
-        const result = await createStaffMember(values, photo ?? null);
+      onSubmit={async (values, photo, sessionUploadedBioUrls) => {
+        const result = await createStaffMember(values, photo ?? null, sessionUploadedBioUrls);
 
         if ("error" in result) {
           toast.error(result.error);

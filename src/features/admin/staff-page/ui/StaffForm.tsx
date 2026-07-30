@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Controller, type Resolver, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { routes } from "@/config/navigation";
@@ -29,7 +29,11 @@ type StaffFormProps = {
    * the current photo (edit only), `null` = no/removed photo, `File` = a
    * newly picked one.
    */
-  onSubmit: (values: StaffFormValues, photo: File | null | undefined) => Promise<void>;
+  onSubmit: (
+    values: StaffFormValues,
+    photo: File | null | undefined,
+    sessionUploadedBioUrls: string[]
+  ) => Promise<void>;
 };
 
 export function StaffForm({ mode, defaultValues, defaultImageUrl, onSubmit }: StaffFormProps) {
@@ -37,6 +41,7 @@ export function StaffForm({ mode, defaultValues, defaultImageUrl, onSubmit }: St
   const [photo, setPhoto] = useState<UploadPhotoValue>(
     defaultImageUrl ? { kind: "existing", url: defaultImageUrl } : { kind: "none" },
   );
+  const uploadedBioUrlsRef = useRef<string[]>([]);
 
   const {
     control,
@@ -54,14 +59,19 @@ export function StaffForm({ mode, defaultValues, defaultImageUrl, onSubmit }: St
   async function handleFormSubmit(values: StaffFormValues) {
     try {
       const resolvedPhoto = photo.kind === "new" ? photo.file : photo.kind === "existing" ? undefined : null;
-      await onSubmit(values, resolvedPhoto);
+      await onSubmit(values, resolvedPhoto, uploadedBioUrlsRef.current);
     } catch {
       toast.error("Не вдалося зберегти дані. Спробуйте ще раз.");
     }
   }
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className="flex min-h-0 flex-1 flex-col gap-4">
+    <form
+      onSubmit={(event) => {
+        void handleSubmit(handleFormSubmit)(event);
+      }}
+      className="flex min-h-0 flex-1 flex-col gap-4"
+    >
       <div className="flex shrink-0 items-center justify-between gap-4">
         <div>
           <h1 className="text-lg font-semibold text-foreground">
@@ -171,7 +181,13 @@ export function StaffForm({ mode, defaultValues, defaultImageUrl, onSubmit }: St
             <Controller
               control={control}
               name="bio"
-              render={({ field }) => <TextEditor value={field.value ?? ""} onChange={field.onChange} />}
+              render={({ field }) => (
+                <TextEditor
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  onImageUpload={(url) => uploadedBioUrlsRef.current.push(url)}
+                />
+              )}
             />
           </Field>
         </FieldGroup>

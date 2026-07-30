@@ -27,6 +27,7 @@ import {
   ImageStyle,
   ImageTextAlternative,
   ImageToolbar,
+  ImageUpload,
   ImageUtils,
   Indent,
   IndentBlock,
@@ -46,11 +47,11 @@ import {
   Underline,
   type EditorConfig,
 } from "ckeditor5"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 
 import "ckeditor5/ckeditor5.css"
 import "./text-editor.css"
-// import ThisCustomUploadAdapterPlugin from "../lib/plugins/fileUploader"
+import { createUploadAdapterPlugin } from "../lib/plugins/fileUploader"
 
 
 /**
@@ -61,6 +62,14 @@ const LICENSE_KEY = "GPL" // or <YOUR_LICENSE_KEY>.
 interface Props {
   value: string
   onChange: (value: string) => void
+  /**
+   * Fires for every image successfully uploaded during this editor
+   * instance's lifetime — including ones later removed from the document
+   * before the surrounding form is ever saved. Callers use it to clean up
+   * storage files that never made it into a saved version (a before/after
+   * diff of saved content alone can't see those).
+   */
+  onImageUpload?: (url: string) => void
 }
 
 /**
@@ -69,13 +78,18 @@ interface Props {
  * the closing "}}" directly in the id to get "{{fullname}}" in the editor.
  */
 
-export default function TextEditor({ value, onChange }: Props) {
+export default function TextEditor({ value, onChange, onImageUpload }: Props) {
   const [isLayoutReady, setIsLayoutReady] = useState(false)
   useEffect(() => {
     setIsLayoutReady(true)
 
     return () => setIsLayoutReady(false)
   }, [])
+
+  const onImageUploadRef = useRef(onImageUpload)
+  useEffect(() => {
+    onImageUploadRef.current = onImageUpload
+  }, [onImageUpload])
 
   const { editorConfig } = useMemo(() => {
     if (!isLayoutReady) {
@@ -138,6 +152,7 @@ export default function TextEditor({ value, onChange }: Props) {
           ImageStyle,
           ImageTextAlternative,
           ImageToolbar,
+          ImageUpload,
           ImageUtils,
           Indent,
           IndentBlock,
@@ -155,7 +170,8 @@ export default function TextEditor({ value, onChange }: Props) {
           TextTransformation,
           Underline,
         ],
-        // extraPlugins: [ThisCustomUploadAdapterPlugin],
+        // eslint-disable-next-line react-hooks/refs -- ref is only read lazily inside the upload adapter's callback (at upload time), never during render
+        extraPlugins: [createUploadAdapterPlugin((url) => onImageUploadRef.current?.(url))],
         fontFamily: {
           supportAllValues: true,
         },

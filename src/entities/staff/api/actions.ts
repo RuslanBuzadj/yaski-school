@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { routes } from "@/config/navigation";
 import { prisma } from "@/shared/lib/prisma";
 import { requireAdmin, UnauthorizedError } from "@/shared/api/auth";
-import { deleteImage, uploadImage } from "@/shared/api/storage";
+import { cleanupContentImages, cleanupRemovedContentImages, deleteImage, uploadImage } from "@/shared/api/storage";
 import type { StaffInput } from "../model/types";
 
 type ActionResult = { error: string } | { success: true };
@@ -38,7 +38,11 @@ function toStaffData(input: StaffInput, imageUrl: string | null) {
   };
 }
 
-export async function createStaffMember(input: StaffInput, photo: File | null): Promise<ActionResult> {
+export async function createStaffMember(
+  input: StaffInput,
+  photo: File | null,
+  sessionUploadedBioUrls: string[] = []
+): Promise<ActionResult> {
   try {
     await requireAdmin();
 
@@ -51,6 +55,8 @@ export async function createStaffMember(input: StaffInput, photo: File | null): 
       throw error;
     }
 
+    await cleanupRemovedContentImages(null, input.bio, sessionUploadedBioUrls);
+
     revalidatePath(routes.admin.staff);
     revalidatePath(routes.staff);
     return { success: true };
@@ -59,7 +65,12 @@ export async function createStaffMember(input: StaffInput, photo: File | null): 
   }
 }
 
-export async function updateStaffMember(id: number, input: StaffInput, photo: PhotoChange): Promise<ActionResult> {
+export async function updateStaffMember(
+  id: number,
+  input: StaffInput,
+  photo: PhotoChange,
+  sessionUploadedBioUrls: string[] = []
+): Promise<ActionResult> {
   try {
     await requireAdmin();
 
@@ -89,6 +100,8 @@ export async function updateStaffMember(id: number, input: StaffInput, photo: Ph
       await deleteImage(existing.image);
     }
 
+    await cleanupRemovedContentImages(existing.bio, input.bio, sessionUploadedBioUrls);
+
     revalidatePath(routes.admin.staff);
     revalidatePath(routes.staff);
     revalidatePath(`${routes.staff}/${id}`);
@@ -106,6 +119,7 @@ export async function deleteStaffMember(id: number): Promise<ActionResult> {
     if (deleted.image) {
       await deleteImage(deleted.image);
     }
+    await cleanupContentImages(deleted.bio);
 
     revalidatePath(routes.admin.staff);
     revalidatePath(routes.staff);

@@ -20,8 +20,8 @@ export function EditStaffPage({ member }: EditStaffPageProps) {
       mode="edit"
       defaultValues={staffMemberToFormValues(member)}
       defaultImageUrl={member.image}
-      onSubmit={async (values, photo) => {
-        const result = await updateStaffMember(member.id, values, photo);
+      onSubmit={async (values, photo, sessionUploadedBioUrls) => {
+        const result = await updateStaffMember(member.id, values, photo, sessionUploadedBioUrls);
 
         if ("error" in result) {
           toast.error(result.error);
