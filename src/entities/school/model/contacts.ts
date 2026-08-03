@@ -2,7 +2,7 @@ export const schoolContacts = {
   name: "Загальноосвітня школа села Яські",
   phone: "+38 (050) 336-02-71",
   email: "office@lyceum35.od.ukr.education",
-  address: "проспект Лесі Українки, буд. 3, м. Одеса, 65044",
+  address: "с. Яські, Одеська область, 67642",
   director: "Арват Віктор Миколайович",
   copyright: "Департамент освіти та науки Одеської міської ради",
 } as const;
