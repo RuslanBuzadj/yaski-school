@@ -5,6 +5,7 @@ import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { type Resolver, useFieldArray, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { routes } from "@/config/navigation";
 import { Button } from "@/shared/ui/button";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/shared/ui/field";
@@ -19,12 +20,22 @@ import { type GalleryFormValues, galleryFormSchema } from "../model/schema";
 type GalleryFormProps = {
   mode: "create" | "edit";
   defaultValues: GalleryFormValues;
-  onSubmit: (values: GalleryFormValues) => void;
+  /** Existing cover URL to preview in edit mode; omit/null for create. */
+  defaultCoverUrl?: string | null;
+  /**
+   * `cover` mirrors the create/update actions' contract: `undefined` = keep
+   * the current cover (edit only), `null` = no/removed cover, `File` = a
+   * newly picked one. `newImages` are files added in this session that don't
+   * exist in the DB yet.
+   */
+  onSubmit: (values: GalleryFormValues, cover: File | null | undefined, newImages: File[]) => Promise<void>;
 };
 
-export function GalleryForm({ mode, defaultValues, onSubmit }: GalleryFormProps) {
+export function GalleryForm({ mode, defaultValues, defaultCoverUrl, onSubmit }: GalleryFormProps) {
   const router = useRouter();
-  const [cover, setCover] = useState<UploadPhotoValue>({ kind: "none" });
+  const [cover, setCover] = useState<UploadPhotoValue>(
+    defaultCoverUrl ? { kind: "existing", url: defaultCoverUrl } : { kind: "none" }
+  );
   const [newImageFiles, setNewImageFiles] = useState<File[]>([]);
 
   const {
@@ -42,8 +53,23 @@ export function GalleryForm({ mode, defaultValues, onSubmit }: GalleryFormProps)
 
   const { fields, remove } = useFieldArray({ control, name: "images" });
 
+  async function handleFormSubmit(values: GalleryFormValues) {
+    try {
+      const resolvedCover =
+        cover.kind === "new" ? cover.file : cover.kind === "existing" ? undefined : null;
+      await onSubmit(values, resolvedCover, newImageFiles);
+    } catch {
+      toast.error("Не вдалося зберегти дані. Спробуйте ще раз.");
+    }
+  }
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex min-h-0 flex-1 flex-col gap-4">
+    <form
+      onSubmit={(event) => {
+        void handleSubmit(handleFormSubmit)(event);
+      }}
+      className="flex min-h-0 flex-1 flex-col gap-4"
+    >
       <div className="flex shrink-0 items-center justify-between gap-4">
         <div>
           <h1 className="text-lg font-semibold text-foreground">

@@ -1,15 +1,10 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { Images, Pencil, Trash2 } from "lucide-react";
+import { Images } from "lucide-react";
 import type { GalleryAlbum } from "@/entities/gallery";
-import { routes } from "@/config/navigation";
 import { ImagePlaceholder } from "@/shared/ui/image-placeholder";
-import { RowActions } from "@/shared/ui/row-actions";
-
-function handleDeleteGalleryAlbum() {
-  // TODO: implement once backend is ready
-}
+import { GalleryRowActions } from "../ui/GalleryRowActions";
 
 export function useGalleryColumns(): ColumnDef<GalleryAlbum>[] {
   return [
@@ -44,23 +39,7 @@ export function useGalleryColumns(): ColumnDef<GalleryAlbum>[] {
     {
       id: "actions",
       header: "",
-      cell: ({ row }) => (
-        <RowActions
-          actions={[
-            {
-              label: "Редагувати",
-              icon: <Pencil />,
-              href: routes.admin.galleryEdit(row.original.id),
-            },
-            {
-              label: "Видалити",
-              icon: <Trash2 />,
-              variant: "destructive",
-              onSelect: handleDeleteGalleryAlbum,
-            },
-          ]}
-        />
-      ),
+      cell: ({ row }) => <GalleryRowActions album={row.original} />,
     },
   ];
 }

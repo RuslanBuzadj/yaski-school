@@ -3,12 +3,16 @@
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { routes } from "@/config/navigation";
-import { mockGalleryAlbums } from "@/entities/gallery";
+import type { GalleryAlbum } from "@/entities/gallery";
 import { Button } from "@/shared/ui/button";
 import { DataTable } from "@/widgets/data-table";
 import { useGalleryColumns } from "../model/use-gallery-columns";
 
-export function AdminGalleryPage() {
+type AdminGalleryPageProps = {
+  albums: GalleryAlbum[];
+};
+
+export function AdminGalleryPage({ albums }: AdminGalleryPageProps) {
   const columns = useGalleryColumns();
 
   return (
@@ -28,7 +32,7 @@ export function AdminGalleryPage() {
         </Button>
       </div>
 
-      <DataTable columns={columns} data={mockGalleryAlbums} />
+      <DataTable columns={columns} data={albums} />
     </div>
   );
 }

@@ -1,10 +1,16 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Newspaper } from "lucide-react";
 import { routes } from "@/config/navigation";
 import { Button } from "@/shared/ui/button";
-import { NewsCard, mockNews } from "@/entities/news";
+import { NewsCard } from "@/entities/news";
+import { getNewsList } from "@/entities/news/api/queries";
+import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from "@/shared/ui/empty";
 
-export function NewsSection() {
+const PREVIEW_COUNT = 3;
+
+export async function NewsSection() {
+  const news = (await getNewsList()).slice(0, PREVIEW_COUNT);
+
   return (
     <section className="py-16 sm:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -18,17 +24,33 @@ export function NewsSection() {
           </Link>
         </div>
 
-        <div className="flex flex-col divide-y divide-border">
-          {mockNews.map((item) => (
-            <NewsCard key={item.id} news={item} />
-          ))}
-        </div>
+        {news.length > 0 ? (
+          <>
+            <div className="flex flex-col divide-y divide-border">
+              {news.map((item) => (
+                <NewsCard key={item.id} news={item} />
+              ))}
+            </div>
 
-        <div className="mt-10 flex">
-          <Button asChild variant="default" size="xl">
-            <Link href={routes.news}>Всі новини</Link>
-          </Button>
-        </div>
+            <div className="mt-10 flex">
+              <Button asChild variant="default" size="xl">
+                <Link href={routes.news}>Всі новини</Link>
+              </Button>
+            </div>
+          </>
+        ) : (
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Newspaper />
+              </EmptyMedia>
+              <EmptyTitle>Новин поки немає</EmptyTitle>
+              <EmptyDescription>
+                Слідкуйте за оновленнями — незабаром тут з&apos;являться свіжі новини школи.
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        )}
       </div>
     </section>
   );

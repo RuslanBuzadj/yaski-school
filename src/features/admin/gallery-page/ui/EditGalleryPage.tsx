@@ -1,6 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { updateGalleryAlbum } from "@/entities/gallery/api/actions";
 import type { GalleryAlbum } from "@/entities/gallery";
 import { routes } from "@/config/navigation";
 import { galleryAlbumToFormValues } from "../model/schema";
@@ -17,8 +19,22 @@ export function EditGalleryPage({ album }: EditGalleryPageProps) {
     <GalleryForm
       mode="edit"
       defaultValues={galleryAlbumToFormValues(album)}
-      onSubmit={() => {
-        // TODO: implement once backend is ready
+      defaultCoverUrl={album.cover}
+      onSubmit={async (values, cover, newImages) => {
+        const result = await updateGalleryAlbum(
+          album.id,
+          { title: values.title, description: values.description },
+          cover,
+          values.images.map((image) => ({ id: image.id, caption: image.caption })),
+          newImages
+        );
+
+        if ("error" in result) {
+          toast.error(result.error);
+          return;
+        }
+
+        toast.success("Зміни збережено");
         router.push(routes.admin.gallery);
       }}
     />

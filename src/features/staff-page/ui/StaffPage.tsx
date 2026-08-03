@@ -1,5 +1,7 @@
+import { Users } from "lucide-react";
 import { StaffCard, type StaffMember } from "@/entities/staff";
 import { PageBreadcrumb } from "@/widgets/breadcrumb";
+import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from "@/shared/ui/empty";
 
 type StaffPageProps = {
   staff: StaffMember[];
@@ -19,7 +21,24 @@ export function StaffPage({ staff: allStaff }: StaffPageProps) {
           <h1 className="relative text-3xl sm:text-4xl font-bold text-foreground">
             Колектив нашого закладу
           </h1>
+          <p className="relative mt-4 text-muted-foreground max-w-2xl mx-auto">
+            Знайомтеся з педагогічним колективом, який щодня працює заради розвитку наших учнів.
+          </p>
         </div>
+
+        {allStaff.length === 0 && (
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Users />
+              </EmptyMedia>
+              <EmptyTitle>Інформація про колектив поки не додана</EmptyTitle>
+              <EmptyDescription>
+                Ми оновлюємо цю сторінку — незабаром тут з&apos;явиться склад колективу.
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        )}
 
         {administration.length > 0 && (
           <div className="mb-16">
