@@ -1,6 +1,8 @@
-export { schoolContacts, antiCorruptionNotice } from "./model/contacts";
+export { schoolAddress, schoolCopyright, antiCorruptionNotice } from "./model/contacts";
 export { aboutSections } from "./model/about-sections";
 export type { AboutSection, AboutSectionInput } from "./model/about-sections";
+export { defaultSiteSettings } from "./model/site-settings";
+export type { SiteSettings, SiteSettingsInput } from "./model/site-settings";
 
 // `api/queries.ts` and `api/actions.ts` are intentionally NOT re-exported
 // here: they pull in Prisma (Node-only), and this barrel is also imported

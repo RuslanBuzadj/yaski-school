@@ -95,3 +95,18 @@ model AboutSection {
 
   @@map("about_sections")
 }
+
+/// Singleton row (id is always 1) holding site-wide, admin-editable text:
+/// site name/description (home hero, footer) and contact details (footer,
+/// contacts page) other than the address, which stays a static constant.
+model SiteSettings {
+  id          Int      @id @default(1)
+  name        String   @default("Загальноосвітня школа села Яські")
+  description String   @default("Ви зайшли на сайт Загальноосвітньої школи села Яські! Тут ви можете дізнатися про історію нашого закладу, ознайомитись із правилами прийому, а також побачити, які заходи проходять в нашій школі протягом року.")
+  phone       String   @default("+38 (050) 336-02-71")
+  email       String   @default("office@lyceum35.od.ukr.education")
+  director    String   @default("Арват Віктор Миколайович")
+  updatedAt   DateTime @updatedAt
+
+  @@map("site_settings")
+}

@@ -6,6 +6,7 @@ import { prisma } from "@/shared/lib/prisma";
 import { requireAdmin, UnauthorizedError } from "@/shared/api/auth";
 import { cleanupContentImages, cleanupRemovedContentImages } from "@/shared/api/storage";
 import type { AboutSectionInput } from "../model/about-sections";
+import type { SiteSettingsInput } from "../model/site-settings";
 
 type ActionResult = { error: string } | { success: true };
 
@@ -88,6 +89,26 @@ export async function deleteAboutSection(slug: string): Promise<ActionResult> {
 
     revalidatePath(routes.admin.about);
     revalidatePath(routes.about);
+    return { success: true };
+  } catch (error) {
+    return { error: toErrorMessage(error) };
+  }
+}
+
+export async function updateSiteSettings(input: SiteSettingsInput): Promise<ActionResult> {
+  try {
+    await requireAdmin();
+
+    await prisma.siteSettings.upsert({
+      where: { id: 1 },
+      create: { id: 1, ...input },
+      update: { ...input },
+    });
+
+    // Site name/description/contacts show up in the header, footer and home
+    // hero on every public page, so invalidate the whole layout rather than
+    // a single route.
+    revalidatePath("/", "layout");
     return { success: true };
   } catch (error) {
     return { error: toErrorMessage(error) };

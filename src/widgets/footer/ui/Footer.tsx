@@ -2,10 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Phone, Mail, User } from "lucide-react";
 import { routes, publicNavItems } from "@/config/navigation";
-import { schoolContacts, antiCorruptionNotice } from "@/entities/school";
+import { schoolAddress, schoolCopyright, antiCorruptionNotice } from "@/entities/school";
+import { getSiteSettings } from "@/entities/school/api/queries";
 
-export default function Footer() {
+export default async function Footer() {
   const year = new Date().getFullYear();
+  const settings = await getSiteSettings();
 
   return (
     <footer className="relative bg-slate-900 text-slate-300">
@@ -37,7 +39,7 @@ export default function Footer() {
                 />
               </div>
               <span className="font-bold text-xs uppercase leading-tight text-white max-w-[180px] tracking-wide group-hover:text-yellow-400 transition-colors">
-                {schoolContacts.name}
+                {settings.name}
               </span>
             </Link>
 
@@ -78,28 +80,28 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <Phone className="h-4 w-4 text-yellow-400 mt-0.5 shrink-0" />
                 <a
-                  href={`tel:${schoolContacts.phone.replace(/[\s()]/g, "")}`}
+                  href={`tel:${settings.phone.replace(/[\s()]/g, "")}`}
                   className="text-sm hover:text-yellow-400 transition-colors"
                 >
-                  {schoolContacts.phone}
+                  {settings.phone}
                 </a>
               </li>
               <li className="flex items-start gap-3">
                 <Mail className="h-4 w-4 text-yellow-400 mt-0.5 shrink-0" />
                 <a
-                  href={`mailto:${schoolContacts.email}`}
+                  href={`mailto:${settings.email}`}
                   className="text-sm hover:text-yellow-400 transition-colors break-all"
                 >
-                  {schoolContacts.email}
+                  {settings.email}
                 </a>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="h-4 w-4 text-yellow-400 mt-0.5 shrink-0" />
-                <span className="text-sm">{schoolContacts.address}</span>
+                <span className="text-sm">{schoolAddress}</span>
               </li>
               <li className="flex items-start gap-3">
                 <User className="h-4 w-4 text-yellow-400 mt-0.5 shrink-0" />
-                <span className="text-sm">{schoolContacts.director}</span>
+                <span className="text-sm">{settings.director}</span>
               </li>
             </ul>
           </div>
@@ -107,7 +109,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
-          <span>© {year} {schoolContacts.copyright}</span>
+          <span>© {year} {schoolCopyright}</span>
           <span className="hidden sm:block h-px flex-1 mx-6 bg-slate-700/60" />
           <Link
             href={routes.contacts}

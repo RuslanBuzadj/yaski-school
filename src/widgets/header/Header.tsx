@@ -111,7 +111,13 @@ function AdminProfileMenu({ email }: { email: string }) {
   );
 }
 
-export default function Header({ adminEmail }: { adminEmail?: string | null }) {
+export default function Header({
+  adminEmail,
+  siteName,
+}: {
+  adminEmail?: string | null;
+  siteName: string;
+}) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -129,7 +135,7 @@ export default function Header({ adminEmail }: { adminEmail?: string | null }) {
             />
           </div>
           <span className="hidden sm:block font-bold text-xs uppercase leading-tight max-w-[220px] tracking-wide">
-            Загальноосвітня школа села Яські
+            {siteName}
           </span>
         </Link>
 

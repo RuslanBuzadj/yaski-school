@@ -1,3 +1,7 @@
-export default function AdminDashboardPage() {
-  return <main><h1>Панель керування</h1></main>;
+import { getSiteSettings } from "@/entities/school/api/queries";
+import { AdminSettingsPage } from "@/features/admin/settings-page";
+
+export default async function AdminDashboardPage() {
+  const settings = await getSiteSettings();
+  return <AdminSettingsPage settings={settings} />;
 }

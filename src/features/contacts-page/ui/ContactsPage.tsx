@@ -1,40 +1,44 @@
 import { Clock, Mail, MapPin, Phone, User } from "lucide-react";
-import { schoolContacts } from "@/entities/school";
+import { schoolAddress } from "@/entities/school";
+import { getSiteSettings } from "@/entities/school/api/queries";
 import { PageBreadcrumb } from "@/widgets/breadcrumb";
 import { Card, CardContent } from "@/shared/ui/card";
-
-const contactCards = [
-  {
-    icon: MapPin,
-    label: "Адреса",
-    value: schoolContacts.address,
-    href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(schoolContacts.address)}`,
-  },
-  {
-    icon: Phone,
-    label: "Телефон",
-    value: schoolContacts.phone,
-    href: `tel:${schoolContacts.phone.replace(/[\s()]/g, "")}`,
-  },
-  {
-    icon: Mail,
-    label: "Електронна пошта",
-    value: schoolContacts.email,
-    href: `mailto:${schoolContacts.email}`,
-  },
-  {
-    icon: User,
-    label: "Директор",
-    value: schoolContacts.director,
-  },
-] as const;
 
 const workingHours = [
   { day: "Понеділок — П'ятниця", hours: "08:00 — 17:00" },
   { day: "Субота, Неділя", hours: "вихідний" },
 ] as const;
 
-export function ContactsPage() {
+export async function ContactsPage() {
+  const settings = await getSiteSettings();
+
+  const contactCards = [
+    {
+      icon: MapPin,
+      label: "Адреса",
+      value: schoolAddress,
+      href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(schoolAddress)}`,
+    },
+    {
+      icon: Phone,
+      label: "Телефон",
+      value: settings.phone,
+      href: `tel:${settings.phone.replace(/[\s()]/g, "")}`,
+    },
+    {
+      icon: Mail,
+      label: "Електронна пошта",
+      value: settings.email,
+      href: `mailto:${settings.email}`,
+    },
+    {
+      icon: User,
+      label: "Директор",
+      value: settings.director,
+      href: undefined,
+    },
+  ] as const;
+
   return (
     <section className="py-16 sm:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
